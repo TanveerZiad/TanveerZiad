@@ -1,4 +1,6 @@
-## Hi there 👋
+## 🎮 My GitHub Game
+
+![My GitHub Game](game.gif)## Hi there 👋
 
 <!--
 **TanveerZiad/TanveerZiad** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
