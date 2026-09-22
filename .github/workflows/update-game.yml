@@ -1,24 +1,49 @@
-name: Update Space Shooter Game
+name: 🌌 Daily Space Shooter Update
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency:
+  group: space-shooter-update
+  cancel-in-progress: true
+
 jobs:
   update-game:
+    name: 👾 Update Space Shooter
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v6
+      - name: 🚀 Checkout
+        uses: actions/checkout@v6
         with:
           fetch-depth: 2
 
-      - uses: czl9707/gh-space-shooter@v2
+      - name: 🎮 Generate New Game
+        uses: czl9707/gh-space-shooter@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          output-path: 'game.gif'
-          strategy: 'random'
+          output-path: "game.gif"
+          strategy: "random"
+
+      - name: 📦 Commit Changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add game.gif
+
+          if git diff --cached --quiet; then
+            echo "✨ Game is already up to date."
+            exit 0
+          fi
+
+          git commit -m "🎮 chore: refresh space shooter"
+          git push
+
+      - name: ✅ Done
+        run: echo "🚀 Space Shooter successfully updated!"
